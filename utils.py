@@ -15,12 +15,9 @@ class Random_choise:
         return random.choice(args)
 
 
-class Taro:
-    def __init__(self, cart, description, image) -> None:
-        self.cart = cart
-        self.description = description
-        self.image = image
-
-    def get_cart_tree(card):
-        """Метод раздачи карт."""
-        return random.choice(card)
+def get_random_card(cartes):
+    """Вспомогательный метод отображения карты и значения"""
+    card, pack = random.choice(list(cartes.items()))
+    if card is None:
+        card = 'carts/ожидание.png'
+    return card, pack
