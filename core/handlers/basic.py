@@ -51,6 +51,14 @@ async def cmd_start(message: types.Message, bot: Bot):
             )
 
 
+async def help_bot(message: types.Message, bot: Bot):
+    await set_commands(bot)
+    await bot.send_message(message.from_user.id,
+                           'В разработке у @Devarlamov! Но это не точно) '
+                           f'{message.from_user.full_name}',
+                           )
+
+
 async def get_photo(message: types.Message, bot: Bot):
     """Хедлер сохранения картинок."""
     await message.answer('Спасибо за картинку')

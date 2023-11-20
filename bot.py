@@ -1,12 +1,16 @@
 import asyncio
 import logging
 import os
-from aiogram import F
 from logging.handlers import RotatingFileHandler
 from aiogram.filters import Command
-from aiogram import Bot, Dispatcher
-from apps.ball_predictions.ball import ball_predictor, yes_or_no
-from apps.relationship_layouts.layouts import (
+from aiogram import Bot, Dispatcher, F
+from core.constant import BIG_ORACUL, DESTINY, DIGGICULT_QUESTION, LEARN_FUTURE, QUESTION_FEELINGS
+from core.handlers.ball import (
+    ball_predictor,
+    yes_or_no,
+    )
+# from core.handlers.colback import selekt_help
+from core.handlers.layouts import (
     doom,
     love_predictor,
     love_yes_or_no,
@@ -17,10 +21,31 @@ from apps.relationship_layouts.layouts import (
 from core.handlers.basic import (
     cmd_start,
     end_bot,
+    help_bot,
     start_bot,
     get_photo
     )
 
+from core.handlers.maney_qwestion import (
+    money_issues,
+    job_search,
+    job_search_forecast
+    )
+
+from core.handlers.layouts_future import (
+    future_layouts,
+    recommendations,
+    recommendations_day)
+from core.handlers.pay import (
+    destiny,
+    difficult_question,
+    learn_the_future,
+    question_feelings,
+    the_great_oracle,
+    pay_menu,
+    pre_checkout_qwery,
+    successfull_payment
+    )
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -44,8 +69,18 @@ async def start():
 
     dp.message.register(get_photo, F.photo)
 
-    dp.message.register(cmd_start, Command(commands=['start', 'Menu']))
+    dp.message.register(cmd_start, Command(commands=['start',]))
+    dp.message.register(help_bot, Command(commands=['help',]))
+    dp.message.register(cmd_start, F.text == '🧙🏻‍♀️Menu')
     dp.message.register(ball_predictor, F.text == "Шар предсказаний (да/нет)")
+    dp.message.register(pay_menu, F.text == 'Платные услуги')
+    dp.message.register(the_great_oracle, F.text == BIG_ORACUL)
+    dp.message.register(difficult_question, F.text == DIGGICULT_QUESTION)
+    dp.message.register(question_feelings, F.text == QUESTION_FEELINGS)
+    dp.message.register(learn_the_future, F.text == LEARN_FUTURE)
+    dp.message.register(destiny, F.text == DESTINY)
+    dp.pre_checkout_query.register(pre_checkout_qwery)
+    dp.message.register(successfull_payment,  F.successful_payment)
     dp.message.register(yes_or_no, F.text == "Узнать ответ")
     dp.message.register(
         love_predictor, F.text == 'Расклады на любовь и отношения')
@@ -55,6 +90,15 @@ async def start():
                         F.text == 'Есть ли будущее у этих отношений?')
     dp.message.register(the_future_with_man,
                         F.text == 'Чего ждать в любви с этим человеком?')
+    dp.message.register(money_issues, F.text == "Расклады на денежные вопросы")
+    dp.message.register(job_search, F.text == "Найду ли я работу?")
+    dp.message.register(job_search_forecast,
+                        F.text == "Финансовый прогноз на неделю (Таро)")
+    dp.message.register(future_layouts, F.text == 'Расклады на будущее')
+    dp.message.register(recommendations,
+                        F.text == 'Общее предсказание на день (Таро)')
+    dp.message.register(recommendations_day,
+                        F.text == 'Совет Вещего Ворона на неделю.')
 
     try:
         await dp.start_polling(bot)
@@ -63,159 +107,3 @@ async def start():
 
 if __name__ == "__main__":
     asyncio.run(start())
-
-# # ===================== Методы Расклады на денежные вопросы ================
-# @dp.message(F.text == "Расклады на денежные вопросы")
-# async def money_issues(message: types.Message):
-#     kb = [
-#         [types.KeyboardButton(text="Найду ли я работу?")],
-#         [types.KeyboardButton(text="Финансовый прогноз на неделю (Таро)")],
-#         [types.KeyboardButton(text="Главное меню")],
-#     ]
-#     keyboard = types.ReplyKeyboardMarkup(
-#         keyboard=kb,
-#         resize_keyboard=True,)
-#     await message.reply("окей, задумай вопрос",
-#                         reply_markup=keyboard)
-
-
-# @dp.message(F.text == "Найду ли я работу?")
-# async def job_search(message: types.Message):
-#     kb = [
-#         [types.KeyboardButton(text="Главное меню")],
-#     ]
-#     keyboard = types.ReplyKeyboardMarkup(
-#         keyboard=kb,
-#         resize_keyboard=True,)
-#     result = Random_choise.get_random_str(WORK_BELT)
-#     await message.answer('Сканирования данных приносящих прибыль🤑🤑🤑')
-#     await asyncio.sleep(1)
-#     GIF = Random_choise.get_random_smails(WORK_BELT_GIF)
-#     await message.answer_sticker(GIF)
-#     await asyncio.sleep(3)
-#     await message.reply(f'"{result}"',
-#                         reply_markup=keyboard)
-
-
-# @dp.message(F.text == "Финансовый прогноз на неделю (Таро)")
-# async def job_search1(message: types.Message):
-#     kb = [
-#         [types.KeyboardButton(text="Главное меню")],
-#     ]
-#     keyboard = types.ReplyKeyboardMarkup(
-#         keyboard=kb,
-#         resize_keyboard=True,)
-#     await message.answer('Запрос к судьбе 🎴🎴🎴')
-#     await asyncio.sleep(1)
-#     card, pack = get_random_card(CART)
-#     photo = FSInputFile(card,)
-#     GIF = Random_choise.get_random_smails(WORK_BELT_GIF)
-#     await message.answer_sticker(GIF)
-#     await asyncio.sleep(3)
-#     await bot.send_photo(message.chat.id, photo, caption=pack,
-#                          reply_markup=keyboard)
-
-# # ===================Расклады на будующее меню ===========================
-
-
-# @dp.message(F.text == 'Расклады на будущее')
-# async def future_layouts(message: types.Message):
-#     kb = [
-#         [types.KeyboardButton(text="Совет Вещего Ворона на неделю.")],
-#         [types.KeyboardButton(text="Общее предсказание на день (Таро)")],
-#         [types.KeyboardButton(text="Главное меню")],
-#     ]
-#     keyboard = types.ReplyKeyboardMarkup(
-#         keyboard=kb,
-#         resize_keyboard=True,)
-#     await message.reply("окей, что ты хочешь узнать?",
-#                         reply_markup=keyboard)
-
-
-# # ======================== Расклады на будующее ===========================
-# @dp.message(F.text == 'Общее предсказание на день (Таро)')
-# async def recommendations(message: types.Message):
-#     kb = [
-#         [types.KeyboardButton(text="Главное меню")],
-#     ]
-#     keyboard = types.ReplyKeyboardMarkup(
-#         keyboard=kb,
-#         resize_keyboard=True,)
-#     await message.answer('Запрос к судьбе 🎴🎴🎴')
-#     await asyncio.sleep(1)
-#     card, pack = get_random_card(CART_VORON)
-#     photo = FSInputFile(card,)
-#     GIF = Random_choise.get_random_smails(WORK_BELT_GIF)
-#     await message.answer_sticker(GIF)
-#     await asyncio.sleep(3)
-#     await bot.send_photo(message.chat.id, photo, caption=pack,
-#                          reply_markup=keyboard)
-
-
-# @dp.message(F.text == 'Совет Вещего Ворона на неделю.')
-# async def recommendations_day(message: types.Message):
-#     kb = [
-#         [types.KeyboardButton(text="Главное меню")],
-#     ]
-#     keyboard = types.ReplyKeyboardMarkup(
-#         keyboard=kb,
-#         resize_keyboard=True,)
-#     result = Random_choise.get_random_str(BOLS_STORIS)
-#     await message.answer('Cвязь с космосом 🕣🕤🕥')
-#     await asyncio.sleep(1)
-#     GIF = Random_choise.get_random_smails(GIF_FOR_BOLL)
-#     await message.answer_sticker(GIF)
-#     await asyncio.sleep(3)
-#     await message.reply(f'твой ответ "{result}"',
-#                         reply_markup=keyboard)
-
-
-# # ====================== Админка ===================================
-
-# @dp.message(F.text == 'Admin_Taro')
-# async def admin(message: types.Message):
-#     admin_panel = [
-#         [types.KeyboardButton(text='Добавить кoнтeнт')],
-#         [types.KeyboardButton(text='Добавить блогг')],
-#     ]
-#     keyboard_admin = types.ReplyKeyboardMarkup(
-#         keyboard=admin_panel,
-#         resize_keyboard=True,
-#     )
-#     if message.from_user.id == int(os.getenv('ADMIN_ID')):
-#         await message.answer('Вы в меню админа',
-#                              reply_markup=keyboard_admin)
-#     else:
-#         await message.reply('В доступе отказанно')
-
-
-# @dp.message(F.text == 'Добавить блогг')
-# async def admin(message: types.Message):
-#     admin_panel = [
-#         [types.KeyboardButton(text='Добавить блогг')],
-#         [types.KeyboardButton(text="Главное меню")]
-#     ]
-#     keyboard_admin = types.ReplyKeyboardMarkup(
-#         keyboard=admin_panel,
-#         resize_keyboard=True,
-#     )
-#     if message.from_user.id == int(os.getenv('ADMIN_ID')):
-#         chat_ids = session.query(Subscriber.chat_id).all()
-#         for chat_id in chat_ids:
-#             try:
-#                 chat_id = int(chat_id[0])
-#                 await bot.send_message(chat_id,
-#                                        message.text,
-#                                        reply_markup=keyboard_admin)
-#                 logger.info('сообщение отправленно')
-#             except Exception as e:
-#                 logging.info(
-#                     f'Не удалось отправить'
-#                     f'сообщение пользователю {chat_id}: {str(e)}')
-#         await message.answer('Сообщение отправлено всем пользователям')
-#         await message.answer('Вы в меню админа', reply_markup=keyboard_admin)
-#     else:
-#         await message.reply('В доступе отказано')
-
-
-# ==================== Запуск ========================================

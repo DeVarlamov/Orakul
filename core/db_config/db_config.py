@@ -1,7 +1,10 @@
+import os
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
+from dotenv import load_dotenv
+
 
 from core.constant import (
     BOLS_STORIS,
@@ -9,8 +12,16 @@ from core.constant import (
     GIF_FOR_BOLL,
     GIF_FOR_LOVE,
     LOVE_STORIS,
-    THIS_RELATION
+    STIKERS_VORON,
+    THIS_RELATION,
+    VORON_SPECK,
+    WORK_BELT,
+    WORK_BELT_GIF
     )
+
+load_dotenv()
+
+USE_SQL = bool(os.getenv('USE_SQL', False))
 
 engine = create_engine('sqlite:///db.sqlite3')
 Base = declarative_base()
@@ -107,11 +118,58 @@ class Future_Man(BaseTable):
         return f'{self.name}'
 
 
+class Work_Belt(BaseTable):
+    """Модель ответов Чего ждать в любви с этим человеком?"""
+    __tablename__ = 'Work_Belt'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True,)
+
+    def __repr__(self):
+        return f'{self.name}'
+
+
+class Stikers_Work_Belt(BaseTable):
+    """Модель ответов Чего ждать в любви с этим человеком?"""
+    __tablename__ = 'Stikers_Work_Belt'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True,)
+
+    def __repr__(self):
+        return f'{self.name}'
+
+
+class Stikers_Voron(BaseTable):
+    """Модель Стикеров Ворона"""
+    __tablename__ = 'Stikers_Voron'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True,)
+
+    def __repr__(self):
+        return f'{self.name}'
+
+
+class Voron_Speak(BaseTable):
+    """Модель ответов Ворона"""
+    __tablename__ = 'Voron_Speak'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True,)
+
+    def __repr__(self):
+        return f'{self.name}'
+
+
 Base.metadata.create_all(engine)
 
-Stikers_for_love.load_data(GIF_FOR_LOVE)
-Stikers_for_ball.load_data(GIF_FOR_BOLL)
-YesAndNo.load_data(BOLS_STORIS)
-LoveYesAndNo.load_data(LOVE_STORIS)
-This_Relation.load_data(THIS_RELATION)
-Future_Man.load_data(FUTURE_MAN)
+if USE_SQL:
+    Stikers_for_love.load_data(GIF_FOR_LOVE)
+    Stikers_for_ball.load_data(GIF_FOR_BOLL)
+    YesAndNo.load_data(BOLS_STORIS)
+    LoveYesAndNo.load_data(LOVE_STORIS)
+    This_Relation.load_data(THIS_RELATION)
+    Future_Man.load_data(FUTURE_MAN)
+    Work_Belt.load_data(WORK_BELT)
+    Stikers_Work_Belt.load_data(WORK_BELT_GIF)
+    Stikers_Voron.load_data(STIKERS_VORON)
+    Voron_Speak.load_data(VORON_SPECK)
+else:
+    print("БД Не подгружается")
