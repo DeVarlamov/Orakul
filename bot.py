@@ -4,7 +4,13 @@ import os
 from logging.handlers import RotatingFileHandler
 from aiogram.filters import Command
 from aiogram import Bot, Dispatcher, F
-from core.constant import BIG_ORACUL, DESTINY, DIGGICULT_QUESTION, LEARN_FUTURE, QUESTION_FEELINGS
+from core.constant import (
+    BIG_ORACUL,
+    DESTINY,
+    DIGGICULT_QUESTION,
+    LEARN_FUTURE,
+    QUESTION_FEELINGS
+    )
 from core.handlers.ball import (
     ball_predictor,
     yes_or_no,
@@ -61,8 +67,6 @@ logger.info('Еще одно сообщение журнала')
 
 
 async def start():
-    bot = Bot(token=os.getenv('TOKEN'), parse_mode='HTML')
-    dp = Dispatcher()
 # =================== Регестрация Хедлеров ================
     dp.startup.register(start_bot)
     dp.shutdown.register(end_bot)
@@ -106,4 +110,6 @@ async def start():
         await bot.session.close()
 
 if __name__ == "__main__":
+    bot = Bot(token=os.getenv('TOKEN'), parse_mode='HTML')
+    dp = Dispatcher()
     asyncio.run(start())
