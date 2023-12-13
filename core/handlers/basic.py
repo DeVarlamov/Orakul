@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 from core.utils.commands import set_commands
 from core.keyboard.keybordbutton import keyboard
-from core.db_config.db_config import session, Subscriber
+from core.db_config.db_config import Texts, session, Subscriber
 
 
 load_dotenv()
@@ -53,10 +53,19 @@ async def cmd_start(message: types.Message, bot: Bot):
 
 async def help_bot(message: types.Message, bot: Bot):
     await set_commands(bot)
-    await bot.send_message(message.from_user.id,
-                           'В разработке у @Devarlamov! Но это не точно) '
-                           f'{message.from_user.full_name}',
-                           )
+    text = session.query(Texts).filter_by(id=1).first()
+    await message.answer(f'Уважаемый! {message.from_user.full_name} '
+                         '.\r\n Вещий Ворон'
+                         f'.\r\n{text}'
+                         )
+
+
+async def admin_bot(message: types.Message, bot: Bot):
+    await set_commands(bot)
+    await message.answer(f'Уважаемый! {message.from_user.full_name} '
+                         f'.\r\n Админка еще '
+                         f'.\r\n в разработке у @Devarlamov! Но это не точно) '
+                         )
 
 
 async def get_photo(message: types.Message, bot: Bot):

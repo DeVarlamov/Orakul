@@ -6,18 +6,18 @@ from sqlalchemy.exc import IntegrityError
 from dotenv import load_dotenv
 
 
-from core.constant import (
-    BOLS_STORIS,
-    FUTURE_MAN,
-    GIF_FOR_BOLL,
-    GIF_FOR_LOVE,
-    LOVE_STORIS,
-    STIKERS_VORON,
-    THIS_RELATION,
-    VORON_SPECK,
-    WORK_BELT,
-    WORK_BELT_GIF
-    )
+# from core.constant import (
+#     BOLS_STORIS,
+#     FUTURE_MAN,
+#     GIF_FOR_BOLL,
+#     GIF_FOR_LOVE,
+#     LOVE_STORIS,
+#     STIKERS_VORON,
+#     THIS_RELATION,
+#     VORON_SPECK,
+#     WORK_BELT,
+#     WORK_BELT_GIF
+#     )
 
 load_dotenv()
 
@@ -158,18 +158,28 @@ class Voron_Speak(BaseTable):
         return f'{self.name}'
 
 
+class Texts(Base):
+    """Модель подписчиков"""
+    __tablename__ = 'text'
+    id = Column(Integer, primary_key=True)
+    text = Column(String)
+
+    def __repr__(self):
+        return f' {self.text}'
+
+
 Base.metadata.create_all(engine)
 
-if USE_SQL:
-    Stikers_for_love.load_data(GIF_FOR_LOVE)
-    Stikers_for_ball.load_data(GIF_FOR_BOLL)
-    YesAndNo.load_data(BOLS_STORIS)
-    LoveYesAndNo.load_data(LOVE_STORIS)
-    This_Relation.load_data(THIS_RELATION)
-    Future_Man.load_data(FUTURE_MAN)
-    Work_Belt.load_data(WORK_BELT)
-    Stikers_Work_Belt.load_data(WORK_BELT_GIF)
-    Stikers_Voron.load_data(STIKERS_VORON)
-    Voron_Speak.load_data(VORON_SPECK)
-else:
-    print("БД Не подгружается")
+# if USE_SQL:
+#     Stikers_for_love.load_data(GIF_FOR_LOVE)
+#     Stikers_for_ball.load_data(GIF_FOR_BOLL)
+#     YesAndNo.load_data(BOLS_STORIS)
+#     LoveYesAndNo.load_data(LOVE_STORIS)
+#     This_Relation.load_data(THIS_RELATION)
+#     Future_Man.load_data(FUTURE_MAN)
+#     Work_Belt.load_data(WORK_BELT)
+#     Stikers_Work_Belt.load_data(WORK_BELT_GIF)
+#     Stikers_Voron.load_data(STIKERS_VORON)
+#     Voron_Speak.load_data(VORON_SPECK)
+# else:
+#     print("БД Не подгружается")

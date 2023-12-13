@@ -1,21 +1,21 @@
-from aiogram.types import Message
+# from aiogram.types import Message
 
 
 # @dp.message(F.text == 'Admin_Taro')
-async def admin(message: Message):
-    admin_panel = [
-        [types.KeyboardButton(text='Добавить кoнтeнт')],
-        [types.KeyboardButton(text='Добавить блогг')],
-    ]
-    keyboard_admin = types.ReplyKeyboardMarkup(
-        keyboard=admin_panel,
-        resize_keyboard=True,
-    )
-    if message.from_user.id == int(os.getenv('ADMIN_ID')):
-        await message.answer('Вы в меню админа',
-                             reply_markup=keyboard_admin)
-    else:
-        await message.reply('В доступе отказанно')
+# async def admin(message: Message):
+#     admin_panel = [
+#         [types.KeyboardButton(text='Добавить кoнтeнт')],
+#         [types.KeyboardButton(text='Добавить блогг')],
+#     ]
+#     keyboard_admin = types.ReplyKeyboardMarkup(
+#         keyboard=admin_panel,
+#         resize_keyboard=True,
+#     )
+#     if message.from_user.id == int(os.getenv('ADMIN_ID')):
+#         await message.answer('Вы в меню админа',
+#                              reply_markup=keyboard_admin)
+#     else:
+#         await message.reply('В доступе отказанно')
 
 
 # @dp.message(F.text == 'Добавить блогг')

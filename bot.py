@@ -15,7 +15,6 @@ from core.handlers.ball import (
     ball_predictor,
     yes_or_no,
     )
-# from core.handlers.colback import selekt_help
 from core.handlers.layouts import (
     doom,
     love_predictor,
@@ -25,6 +24,7 @@ from core.handlers.layouts import (
     )
 
 from core.handlers.basic import (
+    admin_bot,
     cmd_start,
     end_bot,
     help_bot,
@@ -52,6 +52,7 @@ from core.handlers.pay import (
     pre_checkout_qwery,
     successfull_payment
     )
+from core.utils.statesform import StateForm
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -75,6 +76,7 @@ async def start():
 
     dp.message.register(cmd_start, Command(commands=['start',]))
     dp.message.register(help_bot, Command(commands=['help',]))
+    dp.message.register(admin_bot, Command(commands=['admin',]))
     dp.message.register(cmd_start, F.text == '🧙🏻‍♀️Menu')
     dp.message.register(ball_predictor, F.text == "Шар предсказаний (да/нет)")
     dp.message.register(pay_menu, F.text == 'Платные услуги')
@@ -85,7 +87,7 @@ async def start():
     dp.message.register(destiny, F.text == DESTINY)
     dp.pre_checkout_query.register(pre_checkout_qwery)
     dp.message.register(successfull_payment,  F.successful_payment)
-    dp.message.register(yes_or_no, F.text == "Узнать ответ")
+    dp.message.register(yes_or_no, StateForm.GET_TEXT)
     dp.message.register(
         love_predictor, F.text == 'Расклады на любовь и отношения')
     dp.message.register(love_yes_or_no, F.text == 'Любит/не любит')
@@ -110,6 +112,7 @@ async def start():
         await bot.session.close()
 
 if __name__ == "__main__":
-    bot = Bot(token=os.getenv('TOKEN'), parse_mode='HTML')
+    # session = AiohttpSession(proxy="http://proxy.server:3128")
+    bot = Bot(token=os.getenv('TOKEN'))  # session=session
     dp = Dispatcher()
     asyncio.run(start())

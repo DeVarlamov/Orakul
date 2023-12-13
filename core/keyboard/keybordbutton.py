@@ -29,13 +29,19 @@ keyboard = ReplyKeyboardMarkup(keyboard=[
 keyboard_ball = ReplyKeyboardMarkup(keyboard=[
     [
         KeyboardButton(
-            text='Узнать ответ'
-        ),
-        KeyboardButton(
             text='🧙🏻‍♀️Menu'
         ),
     ],
 ], resize_keyboard=True, input_field_placeholder='Выбери кнопку ⬇️'
+                                     )
+
+keyboard_balls = ReplyKeyboardMarkup(keyboard=[
+    [
+        KeyboardButton(
+            text='отмена'
+        ),
+    ],
+], resize_keyboard=True, input_field_placeholder='Напиши свой вопрос'
                                      )
 
 
@@ -138,6 +144,20 @@ keyboard_pay = ReplyKeyboardMarkup(keyboard=[
         KeyboardButton(
             text='В чем мое предназначение? (Старшие Арканы Таро) 700 руб.'
         ),
+        KeyboardButton(
+            text='🧙🏻‍♀️Menu'
+        ),
+    ]
+], resize_keyboard=True, input_field_placeholder='Выбери кнопку ⬇️'
+                                     )
+
+keyboard_after_pay = ReplyKeyboardMarkup(keyboard=[
+    [
+        KeyboardButton(
+            text='Оставить коментарии к заказу'
+        ),
+    ],
+    [
         KeyboardButton(
             text='🧙🏻‍♀️Menu'
         ),
