@@ -3,7 +3,7 @@ from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from sqlalchemy import func
 from core.db_config.db_config import Stikers_for_ball, YesAndNo, session
-from core.keyboard.keybordbutton import keyboard_ball, keyboard_balls, keyboard
+from core.keyboard.keybordbutton import keyboard_balls, keyboard
 from core.utils.statesform import StateForm
 
 
@@ -27,6 +27,7 @@ async def yes_or_no(message: Message, state: FSMContext):
             Stikers_for_ball).order_by(func.random()).first().name
         await message.answer_sticker(stikers)
         await asyncio.sleep(3)
-        await message.reply(f'{result}',
-                            reply_markup=keyboard_ball)
+        await message.reply(f'{result}'
+                            '.\r\n ⬅️ Вы вернулись в меню',
+                            reply_markup=keyboard)
     await state.clear()

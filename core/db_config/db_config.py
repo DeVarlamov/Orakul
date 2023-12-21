@@ -1,8 +1,9 @@
 import os
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import DateTime, create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime
 from dotenv import load_dotenv
 
 
@@ -53,6 +54,7 @@ class Subscriber(Base):
     lastname = Column(String)
     chat_id = Column(Integer, unique=True)
     user_username = Column(Integer)
+    last_prediction_time = Column(DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return f'Пользователь {self.name}, chat_id {self.chat_id}'
@@ -159,13 +161,25 @@ class Voron_Speak(BaseTable):
 
 
 class Texts(Base):
-    """Модель подписчиков"""
+    """Модель Текста"""
     __tablename__ = 'text'
     id = Column(Integer, primary_key=True)
     text = Column(String)
 
     def __repr__(self):
         return f' {self.text}'
+
+
+class Recommendations(Base):
+    __tablename__ = 'Recommendations'
+    id = Column(Integer, primary_key=True)
+    chat_id = Column(Integer, unique=True)
+    path_card = Column(String)
+    pack = Column(String)
+    last_prediction_time = Column(DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'{self.chat_id}'
 
 
 Base.metadata.create_all(engine)

@@ -26,15 +26,6 @@ keyboard = ReplyKeyboardMarkup(keyboard=[
 ], resize_keyboard=True, input_field_placeholder='Выбери кнопку ⬇️'
                                      )
 
-keyboard_ball = ReplyKeyboardMarkup(keyboard=[
-    [
-        KeyboardButton(
-            text='🧙🏻‍♀️Menu'
-        ),
-    ],
-], resize_keyboard=True, input_field_placeholder='Выбери кнопку ⬇️'
-                                     )
-
 keyboard_balls = ReplyKeyboardMarkup(keyboard=[
     [
         KeyboardButton(

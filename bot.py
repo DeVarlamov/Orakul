@@ -41,7 +41,7 @@ from core.handlers.maney_qwestion import (
 from core.handlers.layouts_future import (
     future_layouts,
     recommendations,
-    recommendations_day)
+    recommendations_week)
 from core.handlers.pay import (
     destiny,
     difficult_question,
@@ -103,7 +103,7 @@ async def start():
     dp.message.register(future_layouts, F.text == 'Расклады на будущее')
     dp.message.register(recommendations,
                         F.text == 'Общее предсказание на день (Таро)')
-    dp.message.register(recommendations_day,
+    dp.message.register(recommendations_week,
                         F.text == 'Совет Вещего Ворона на неделю.')
 
     try:
